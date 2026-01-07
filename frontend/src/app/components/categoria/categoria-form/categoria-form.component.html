@@ -31,17 +31,7 @@
                 {{ getErrorMessage('nombre') }}
             </div>
         </div>
-
-        <div class="mb-3">
-            <label for="descripcion" class="form-label">
-                Descripción <span class="text-danger">*</span>
-            </label>
-            <textarea class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('descripcion')}" id="descripcion"
-                formControlName="descripcion" rows="3" placeholder="Ingrese la descripción"></textarea>
-            <div class="invalid-feedback" *ngIf="isFieldInvalid('descripcion')">
-                {{ getErrorMessage('descripcion') }}
-            </div>
-        </div>
+        
     </form>
 </div>
 
