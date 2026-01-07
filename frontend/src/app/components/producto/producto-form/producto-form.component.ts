@@ -33,7 +33,8 @@ export class ProductoFormComponent implements OnInit, OnChanges {
             descripcion: [''],
             stock: [0, [Validators.required, Validators.min(0)]],
             precio_costo: [0, [Validators.required, Validators.min(0)]],
-            precio_venta: [0, [Validators.required, Validators.min(0)]]
+            precio_venta: [0, [Validators.required, Validators.min(0)]],
+            estado: ['Activo'] // Default to Activo
         });
     }
 
