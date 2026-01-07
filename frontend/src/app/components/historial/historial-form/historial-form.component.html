@@ -1,0 +1,74 @@
+<div class="modal-header bg-primary text-white">
+    <h5 class="modal-title">
+        <i class="bi" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-plus-circle'"></i>
+        {{ isEditMode ? 'Editar Historial' : 'Nuevo Historial' }}
+    </h5>
+    <button type="button" class="btn-close btn-close-white" (click)="onCancel()"></button>
+</div>
+
+<div class="modal-body">
+    <!-- Alertas -->
+    <div class="alert alert-danger" *ngIf="error">
+        <i class="bi bi-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <!-- Loading -->
+    <div class="text-center my-4" *ngIf="loading && isEditMode">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="historialForm" (ngSubmit)="onSubmit()" *ngIf="!loading || !isEditMode">
+        <div class="mb-3">
+            <label for="id_mascota" class="form-label">
+                Mascota <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" [ngClass]="{'is-invalid': isFieldInvalid('id_mascota')}" id="id_mascota"
+                formControlName="id_mascota">
+                <option value="">Seleccione una mascota</option>
+                <option *ngFor="let mascota of mascotas" [value]="mascota.id_mascota">
+                    {{ mascota.nombre_mascota }} - {{ mascota.cliente_completo }}
+                </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('id_mascota')">
+                {{ getErrorMessage('id_mascota') }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="fecha" class="form-label">
+                Fecha <span class="text-danger">*</span>
+            </label>
+            <input type="date" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('fecha')}" id="fecha"
+                formControlName="fecha">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('fecha')">
+                {{ getErrorMessage('fecha') }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">
+                Descripción/Observaciones <span class="text-danger">*</span>
+            </label>
+            <textarea class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('descripcion')}" id="descripcion"
+                formControlName="descripcion" rows="4"
+                placeholder="Ingrese las observaciones del historial médico"></textarea>
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('descripcion')">
+                {{ getErrorMessage('descripcion') }}
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="loading">
+        <i class="bi bi-x-circle"></i> Cancelar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        <i class="bi" [ngClass]="isEditMode ? 'bi-save' : 'bi-plus-circle'" *ngIf="!loading"></i>
+        {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+    </button>
+</div>

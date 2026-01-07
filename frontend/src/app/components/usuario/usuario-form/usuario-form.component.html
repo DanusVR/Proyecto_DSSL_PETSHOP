@@ -1,0 +1,108 @@
+<div class="modal-header bg-primary text-white">
+    <h5 class="modal-title">
+        <i class="bi" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-plus-circle'"></i>
+        {{ isEditMode ? 'Editar Usuario' : 'Nuevo Usuario' }}
+    </h5>
+    <button type="button" class="btn-close btn-close-white" (click)="onCancel()"></button>
+</div>
+
+<div class="modal-body">
+    <!-- Alertas -->
+    <div class="alert alert-danger" *ngIf="error">
+        <i class="bi bi-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <!-- Loading -->
+    <div class="text-center my-4" *ngIf="loading && isEditMode">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()" *ngIf="!loading || !isEditMode">
+        <div class="mb-3">
+            <label for="nombre_completo" class="form-label">
+                Nombre Completo <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('nombre_completo')}"
+                id="nombre_completo" formControlName="nombre_completo" placeholder="Ingrese el nombre completo">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('nombre_completo')">
+                {{ getErrorMessage('nombre_completo') }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="nombre_usuario" class="form-label">
+                Nombre de Usuario <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('nombre_usuario')}"
+                id="nombre_usuario" formControlName="nombre_usuario" placeholder="Ingrese el nombre de usuario">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('nombre_usuario')">
+                {{ getErrorMessage('nombre_usuario') }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">
+                Email <span class="text-danger">*</span>
+            </label>
+            <input type="email" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('email')}" id="email"
+                formControlName="email" placeholder="ejemplo@correo.com">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('email')">
+                {{ getErrorMessage('email') }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">
+                Contraseña <span class="text-danger" *ngIf="!isEditMode">*</span>
+                <small class="text-muted" *ngIf="isEditMode">(Dejar en blanco para no cambiar)</small>
+            </label>
+            <input type="password" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('password')}"
+                id="password" formControlName="password" placeholder="Ingrese la contraseña">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('password')">
+                {{ getErrorMessage('password') }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="rol" class="form-label">
+                Rol <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" [ngClass]="{'is-invalid': isFieldInvalid('rol')}" id="rol"
+                formControlName="rol">
+                <option value="USUARIO">Usuario</option>
+                <option value="ADMIN">Administrador</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('rol')">
+                {{ getErrorMessage('rol') }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="estado" class="form-label">
+                Estado <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" [ngClass]="{'is-invalid': isFieldInvalid('estado')}" id="estado"
+                formControlName="estado">
+                <option value="ACTIVO">Activo</option>
+                <option value="INACTIVO">Inactivo</option>
+            </select>
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('estado')">
+                {{ getErrorMessage('estado') }}
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="loading">
+        <i class="bi bi-x-circle"></i> Cancelar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        <i class="bi" [ngClass]="isEditMode ? 'bi-save' : 'bi-plus-circle'" *ngIf="!loading"></i>
+        {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+    </button>
+</div>

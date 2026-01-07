@@ -1,0 +1,93 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-box-seam"></i> Gestión de Productos</h2>
+        <button (click)="abrirModalNuevo()" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nuevo Producto
+        </button>
+    </div>
+
+    <!-- Alertas -->
+    <div class="alert alert-danger" *ngIf="error">
+        <i class="bi bi-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <!-- Loading -->
+    <div class="text-center my-5" *ngIf="loading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Tabla de productos -->
+    <div class="card shadow-sm" *ngIf="!loading">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Categoría</th>
+                            <th>Stock</th>
+                            <th>P. Costo</th>
+                            <th>P. Venta</th>
+                            <th>Estado</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let producto of productos">
+                            <td>{{ producto.id_producto }}</td>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.nombre_categoria || 'Sin categoría' }}</td>
+                            <td>
+                                <span class="badge"
+                                    [ngClass]="producto.stock > 10 ? 'bg-success' : (producto.stock > 0 ? 'bg-warning' : 'bg-danger')">
+                                    {{ producto.stock }}
+                                </span>
+                            </td>
+                            <td>S/ {{ producto.precio_costo | number:'1.2-2' }}</td>
+                            <td>S/ {{ producto.precio_venta | number:'1.2-2' }}</td>
+                            <td>
+                                <span class="badge"
+                                    [ngClass]="producto.estado === 'ACTIVO' ? 'bg-success' : 'bg-danger'">
+                                    {{ producto.estado }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <button (click)="abrirModalEditar(producto.id_producto!)"
+                                        class="btn btn-sm btn-warning" title="Editar">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button (click)="eliminarProducto(producto.id_producto!)"
+                                        class="btn btn-sm btn-danger" title="Eliminar">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="productos.length === 0">
+                            <td colspan="8" class="text-center text-muted">
+                                <i class="bi bi-inbox"></i> No hay productos registrados
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            Total de productos: <strong>{{ productos.length }}</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Component -->
+<!-- Modal Component -->
+<div class="modal fade show d-block" tabindex="-1" *ngIf="showModal" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <app-producto-form [idProducto]="selectedId" (close)="onModalClose($event)"></app-producto-form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-tags"></i> Gestión de Categorías</h2>
+        <button (click)="abrirModalNuevo()" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nueva Categoría
+        </button>
+    </div>
+
+    <!-- Alertas -->
+    <div class="alert alert-danger" *ngIf="error">
+        <i class="bi bi-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <!-- Loading -->
+    <div class="text-center my-5" *ngIf="loading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Tabla de categorías -->
+    <div class="card shadow-sm" *ngIf="!loading">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let categoria of categorias">
+                            <td>{{ categoria.id_categoria }}</td>
+                            <td>{{ categoria.nombre }}</td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <button (click)="abrirModalEditar(categoria.id_categoria!)"
+                                        class="btn btn-sm btn-warning" title="Editar">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button (click)="eliminarCategoria(categoria.id_categoria!)"
+                                        class="btn btn-sm btn-danger" title="Eliminar">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="categorias.length === 0">
+                            <td colspan="3" class="text-center text-muted">
+                                <i class="bi bi-inbox"></i> No hay categorías registradas
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            Total de categorías: <strong>{{ categorias.length }}</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Component -->
+<!-- Modal Component -->
+<div class="modal fade show d-block" tabindex="-1" *ngIf="showModal" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <app-categoria-form [idCategoria]="selectedId" (close)="onModalClose($event)"></app-categoria-form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+.boleta-container {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .boleta-container,
+    .boleta-container * {
+        visibility: visible;
+    }
+
+    .boleta-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: white !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+
+    /* Hide modal elements that might interfere */
+    .modal-header,
+    .modal-footer,
+    .btn-close,
+    .modal-backdrop {
+        display: none !important;
+    }
+
+    .modal-dialog,
+    .modal-content {
+        margin: 0;
+        padding: 0;
+        border: none;
+        box-shadow: none;
+        background: transparent;
+    }
+}

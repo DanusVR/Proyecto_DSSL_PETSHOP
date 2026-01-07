@@ -1,0 +1,129 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-heart"></i> Gestión de Mascotas</h2>
+        <button (click)="abrirModalNuevo()" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nueva Mascota
+        </button>
+    </div>
+
+    <!-- Alertas -->
+    <div class="alert alert-danger" *ngIf="error">
+        <i class="bi bi-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <!-- Loading -->
+    <div class="text-center my-5" *ngIf="loading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Tabla de mascotas -->
+    <div class="card shadow-sm" *ngIf="!loading">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Especie</th>
+                            <th>Raza</th>
+                            <th>Edad</th>
+                            <th>Sexo</th>
+                            <th>Dueño</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let mascota of mascotas">
+                            <td>{{ mascota.id_mascota }}</td>
+                            <td>{{ mascota.nombre_mascota }}</td>
+                            <td>{{ mascota.especie }}</td>
+                            <td>{{ mascota.raza || '-' }}</td>
+                            <td>{{ mascota.edad || '-' }}</td>
+                            <td>{{ mascota.sexo }}</td>
+                            <td>{{ mascota.cliente_completo }}</td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <button (click)="abrirModalEditar(mascota.id_mascota!)"
+                                        class="btn btn-sm btn-warning" title="Editar">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button (click)="verHistorial(mascota.id_mascota!, mascota.nombre_mascota)"
+                                        class="btn btn-sm btn-info text-white" title="Ver Historial">
+                                        <i class="bi bi-file-medical"></i>
+                                    </button>
+                                    <button (click)="eliminarMascota(mascota.id_mascota!)" class="btn btn-sm btn-danger"
+                                        title="Eliminar">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="mascotas.length === 0">
+                            <td colspan="9" class="text-center text-muted">
+                                <i class="bi bi-inbox"></i> No hay mascotas registradas
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            Total de mascotas: <strong>{{ mascotas.length }}</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Historial Modal -->
+<div class="modal fade show d-block" tabindex="-1" *ngIf="showHistorialModal"
+    style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-activity"></i> Historial Médico: {{ selectedMascotaNombre }}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" (click)="closeHistorialModal()"></button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="historialLoading" class="text-center my-5">
+                    <div class="spinner-border text-info" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+
+                <div *ngIf="!historialLoading">
+                    <div class="list-group" *ngIf="historialRecords.length > 0; else noHistorial">
+                        <div class="list-group-item" *ngFor="let record of historialRecords">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1 text-primary">Fecha: {{ record.fecha | date:'dd/MM/yyyy' }}</h6>
+                            </div>
+                            <p class="mb-1">{{ record.descripcion }}</p>
+                        </div>
+                    </div>
+                    <ng-template #noHistorial>
+                        <div class="text-center text-muted p-4">
+                            <i class="bi bi-journal-medical fs-1"></i>
+                            <p class="mt-2">No hay registros médicos para esta mascota.</p>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeHistorialModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Component -->
+<!-- Modal Component -->
+<div class="modal fade show d-block" tabindex="-1" *ngIf="showModal" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <app-mascota-form [idMascota]="selectedId" (close)="onModalClose($event)"></app-mascota-form>
+        </div>
+    </div>
+</div>

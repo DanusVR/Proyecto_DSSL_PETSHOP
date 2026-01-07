@@ -1,0 +1,57 @@
+<div class="modal-header bg-primary text-white">
+    <h5 class="modal-title">
+        <i class="bi" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-plus-circle'"></i>
+        {{ isEditMode ? 'Editar Categoría' : 'Nueva Categoría' }}
+    </h5>
+    <button type="button" class="btn-close btn-close-white" (click)="onCancel()"></button>
+</div>
+
+<div class="modal-body">
+    <!-- Alertas -->
+    <div class="alert alert-danger" *ngIf="error">
+        <i class="bi bi-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <!-- Loading -->
+    <div class="text-center my-4" *ngIf="loading && isEditMode">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="categoriaForm" (ngSubmit)="onSubmit()" *ngIf="!loading || !isEditMode">
+        <div class="mb-3">
+            <label for="nombre" class="form-label">
+                Nombre <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('nombre')}" id="nombre"
+                formControlName="nombre" placeholder="Ingrese el nombre de la categoría">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('nombre')">
+                {{ getErrorMessage('nombre') }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">
+                Descripción <span class="text-danger">*</span>
+            </label>
+            <textarea class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('descripcion')}" id="descripcion"
+                formControlName="descripcion" rows="3" placeholder="Ingrese la descripción"></textarea>
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('descripcion')">
+                {{ getErrorMessage('descripcion') }}
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="loading">
+        <i class="bi bi-x-circle"></i> Cancelar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        <i class="bi" [ngClass]="isEditMode ? 'bi-save' : 'bi-plus-circle'" *ngIf="!loading"></i>
+        {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+    </button>
+</div>

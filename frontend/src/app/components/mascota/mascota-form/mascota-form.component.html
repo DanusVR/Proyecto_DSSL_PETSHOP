@@ -1,0 +1,112 @@
+<div class="modal-header bg-primary text-white">
+    <h5 class="modal-title">
+        <i class="bi" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-plus-circle'"></i>
+        {{ isEditMode ? 'Editar Mascota' : 'Nueva Mascota' }}
+    </h5>
+    <button type="button" class="btn-close btn-close-white" (click)="onCancel()"></button>
+</div>
+
+<div class="modal-body">
+    <!-- Alertas -->
+    <div class="alert alert-danger" *ngIf="error">
+        <i class="bi bi-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <!-- Loading -->
+    <div class="text-center my-4" *ngIf="loading && isEditMode">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="mascotaForm" (ngSubmit)="onSubmit()" *ngIf="!loading || !isEditMode">
+        <div class="mb-3">
+            <label for="id_cliente" class="form-label">
+                Cliente <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" [ngClass]="{'is-invalid': isFieldInvalid('id_cliente')}" id="id_cliente"
+                formControlName="id_cliente">
+                <option value="">Seleccione un cliente</option>
+                <option *ngFor="let cliente of clientes" [value]="cliente.id_cliente">
+                    {{ cliente.nombreC }} {{ cliente.apellido }}
+                </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('id_cliente')">
+                {{ getErrorMessage('id_cliente') }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="nombre_mascota" class="form-label">
+                Nombre <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('nombre_mascota')}"
+                id="nombre_mascota" formControlName="nombre_mascota" placeholder="Ingrese el nombre de la mascota">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('nombre_mascota')">
+                {{ getErrorMessage('nombre_mascota') }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="especie" class="form-label">
+                    Especie <span class="text-danger">*</span>
+                </label>
+                <select class="form-select" [ngClass]="{'is-invalid': isFieldInvalid('especie')}" id="especie"
+                    formControlName="especie">
+                    <option value="">Seleccione especie</option>
+                    <option *ngFor="let esp of especies" [value]="esp">{{ esp }}</option>
+                </select>
+                <div class="invalid-feedback" *ngIf="isFieldInvalid('especie')">
+                    {{ getErrorMessage('especie') }}
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="raza" class="form-label">
+                    Raza
+                </label>
+                <input type="text" class="form-control" id="raza" formControlName="raza" placeholder="Ingrese la raza">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="edad" class="form-label">
+                    Edad
+                </label>
+                <input type="number" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('edad')}" id="edad"
+                    formControlName="edad" min="0" placeholder="0">
+                <div class="invalid-feedback" *ngIf="isFieldInvalid('edad')">
+                    {{ getErrorMessage('edad') }}
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="sexo" class="form-label">
+                    Sexo <span class="text-danger">*</span>
+                </label>
+                <select class="form-select" [ngClass]="{'is-invalid': isFieldInvalid('sexo')}" id="sexo"
+                    formControlName="sexo">
+                    <option value="">Seleccione</option>
+                    <option *ngFor="let s of sexos" [value]="s">{{ s }}</option>
+                </select>
+                <div class="invalid-feedback" *ngIf="isFieldInvalid('sexo')">
+                    {{ getErrorMessage('sexo') }}
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="loading">
+        <i class="bi bi-x-circle"></i> Cancelar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        <i class="bi" [ngClass]="isEditMode ? 'bi-save' : 'bi-plus-circle'" *ngIf="!loading"></i>
+        {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+    </button>
+</div>

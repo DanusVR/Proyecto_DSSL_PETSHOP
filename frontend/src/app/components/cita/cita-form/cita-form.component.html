@@ -1,0 +1,130 @@
+<div class="modal-header bg-primary text-white">
+    <h5 class="modal-title">
+        <i class="bi" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-plus-circle'"></i>
+        {{ isEditMode ? 'Editar Cita' : 'Nueva Cita' }}
+    </h5>
+    <button type="button" class="btn-close btn-close-white" (click)="onCancel()"></button>
+</div>
+
+<div class="modal-body">
+    <!-- Alertas -->
+    <div class="alert alert-danger" *ngIf="error">
+        <i class="bi bi-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <!-- Loading -->
+    <div class="text-center my-4" *ngIf="loading && isEditMode">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="citaForm" (ngSubmit)="onSubmit()" *ngIf="!loading || !isEditMode">
+        <div class="mb-3">
+            <label for="id_mascota" class="form-label">
+                Mascota <span class="text-danger">*</span>
+            </label>
+            <select class="form-select" [ngClass]="{'is-invalid': isFieldInvalid('id_mascota')}" id="id_mascota"
+                formControlName="id_mascota">
+                <option value="">Seleccione una mascota</option>
+                <option *ngFor="let mascota of mascotas" [value]="mascota.id_mascota">
+                    {{ mascota.nombre_mascota }} ({{ mascota.especie }})
+                </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('id_mascota')">
+                {{ getErrorMessage('id_mascota') }}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Servicios <span class="text-danger">*</span></label>
+            <div class="d-flex gap-2 mb-2">
+                <select class="form-select" #serviceSelect>
+                    <option value="">Seleccione un servicio</option>
+                    <option *ngFor="let servicio of servicios" [value]="servicio.id_servicio">
+                        {{ servicio.nombre }} - S/. {{ servicio.precio }}
+                    </option>
+                </select>
+                <button type="button" class="btn btn-primary"
+                    (click)="addService(serviceSelect.value); serviceSelect.value=''">
+                    <i class="bi bi-plus-lg"></i>
+                </button>
+            </div>
+
+            <!-- Lista de servicios seleccionados -->
+            <div class="table-responsive" *ngIf="selectedServices.length > 0">
+                <table class="table table-sm table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Servicio</th>
+                            <th>Precio</th>
+                            <th style="width: 50px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let s of selectedServices; let i = index">
+                            <td>{{ s.nombre }}</td>
+                            <td>S/. {{ s.precio }}</td>
+                            <td class="text-center">
+                                <button type="button" class="btn btn-sm btn-danger py-0" (click)="removeService(i)">
+                                    <i class="bi bi-x"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-danger small"
+                *ngIf="selectedServices.length === 0 && (citaForm.get('servicios')?.touched || citaForm.get('servicios')?.dirty)">
+                Debe seleccionar al menos un servicio
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="fecha" class="form-label">
+                    Fecha <span class="text-danger">*</span>
+                </label>
+                <input type="date" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('fecha')}" id="fecha"
+                    formControlName="fecha">
+                <div class="invalid-feedback" *ngIf="isFieldInvalid('fecha')">
+                    {{ getErrorMessage('fecha') }}
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="hora" class="form-label">
+                    Hora <span class="text-danger">*</span>
+                </label>
+                <input type="time" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('hora')}" id="hora"
+                    formControlName="hora">
+                <div class="invalid-feedback" *ngIf="isFieldInvalid('hora')">
+                    {{ getErrorMessage('hora') }}
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="estado" class="form-label">
+                Estado
+            </label>
+            <select class="form-select" id="estado" formControlName="estado">
+                <option value="Pendiente">Pendiente</option>
+                <option value="Atendido">Atendido</option>
+                <option value="Cancelado">Cancelado</option>
+            </select>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="loading">
+        <i class="bi bi-x-circle"></i> Cancelar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        <i class="bi" [ngClass]="isEditMode ? 'bi-save' : 'bi-plus-circle'" *ngIf="!loading"></i>
+        Guardar
+    </button>
+</div>

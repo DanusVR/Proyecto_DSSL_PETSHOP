@@ -1,0 +1,85 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-cart"></i> Gestión de Ventas</h2>
+        <button (click)="abrirModalNuevo()" class="btn btn-primary">
+            <i class="bi bi-cart-plus"></i> Nueva Venta
+        </button>
+    </div>
+
+    <!-- Alertas -->
+    <div class="alert alert-danger" *ngIf="error">
+        <i class="bi bi-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <!-- Loading -->
+    <div class="text-center my-5" *ngIf="loading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Tabla de ventas -->
+    <div class="card shadow-sm" *ngIf="!loading">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Vendedor</th>
+                            <th>Fecha</th>
+                            <th>Tipo Pago</th>
+                            <th>Total</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of ventas">
+                            <td>{{ item.id_venta }}</td>
+                            <td>{{ item.nombre_cliente || item.id_cliente }}</td>
+                            <td>{{ item.nombre_usuario || item.idusuario }}</td>
+                            <td>{{ item.fecha | date:'short' }}</td>
+                            <td>
+                                <span class="badge bg-secondary">{{ item.tipo_pago }}</span>
+                            </td>
+                            <td class="fw-bold text-success">{{ item.total | currency:'PEN ' }}</td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-info text-white" title="Ver Detalle"
+                                    (click)="verVenta(item.id_venta!)">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr *ngIf="ventas.length === 0">
+                            <td colspan="7" class="text-center text-muted">
+                                <i class="bi bi-inbox"></i> No hay ventas registradas
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            Total de ventas: <strong>{{ ventas.length }}</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Boleta -->
+<div class="modal fade show d-block" tabindex="-1" *ngIf="showBoletaModal" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <app-venta-boleta [idVenta]="selectedId" (close)="onBoletaClose()"></app-venta-boleta>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Component (Large for POS) -->
+<div class="modal fade show d-block" tabindex="-1" *ngIf="showModal" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <app-venta-form [idVenta]="selectedId" (close)="onModalClose($event)"></app-venta-form>
+        </div>
+    </div>
+</div>

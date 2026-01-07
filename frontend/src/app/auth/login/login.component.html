@@ -1,0 +1,31 @@
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <h1>PetShop</h1>
+            <p>Iniciar Sesión</p>
+        </div>
+
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+            <div class="form-group">
+                <label for="nombre_usuario">Usuario</label>
+                <input type="text" id="nombre_usuario" name="nombre_usuario" [(ngModel)]="credentials.nombre_usuario"
+                    required placeholder="Ingrese su usuario" [disabled]="isLoading" />
+            </div>
+
+            <div class="form-group">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" [(ngModel)]="credentials.password" required
+                    placeholder="••••••••" [disabled]="isLoading" />
+            </div>
+
+            <div class="error-message" *ngIf="errorMessage">
+                {{ errorMessage }}
+            </div>
+
+            <button type="submit" class="btn-login" [disabled]="!loginForm.valid || isLoading">
+                <span *ngIf="!isLoading">Iniciar Sesión</span>
+                <span *ngIf="isLoading">Cargando...</span>
+            </button>
+        </form>
+    </div>
+</div>

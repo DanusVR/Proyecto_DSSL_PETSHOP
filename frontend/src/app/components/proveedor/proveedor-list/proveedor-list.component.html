@@ -1,0 +1,85 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-truck"></i> Gestión de Proveedores</h2>
+        <button (click)="abrirModalNuevo()" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nuevo Proveedor
+        </button>
+    </div>
+
+    <!-- Alertas -->
+    <div class="alert alert-danger" *ngIf="error">
+        <i class="bi bi-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <!-- Loading -->
+    <div class="text-center my-5" *ngIf="loading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Tabla de proveedores -->
+    <div class="card shadow-sm" *ngIf="!loading">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre/Razón Social</th>
+                            <th>RUC</th>
+                            <th>Teléfono</th>
+                            <th>Correo</th>
+                            <th>Tipo</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let proveedor of proveedores">
+                            <td>{{ proveedor.id_proveedor }}</td>
+                            <td>{{ proveedor.nombre || proveedor.razon_social }}</td>
+                            <td>{{ proveedor.ruc }}</td>
+                            <td>{{ proveedor.telefono }}</td>
+                            <td>{{ proveedor.correo }}</td>
+                            <td>
+                                <span class="badge bg-primary">
+                                    {{ proveedor.tipo }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <button (click)="abrirModalEditar(proveedor.id_proveedor!)"
+                                        class="btn btn-sm btn-warning" title="Editar">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button (click)="eliminarProveedor(proveedor.id_proveedor!)"
+                                        class="btn btn-sm btn-danger" title="Eliminar">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="proveedores.length === 0">
+                            <td colspan="7" class="text-center text-muted">
+                                <i class="bi bi-inbox"></i> No hay proveedores registrados
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            Total de proveedores: <strong>{{ proveedores.length }}</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Component -->
+<!-- Modal Component -->
+<div class="modal fade show d-block" tabindex="-1" *ngIf="showModal" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <app-proveedor-form [idProveedor]="selectedId" (close)="onModalClose($event)"></app-proveedor-form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,109 @@
+<div class="modal-header bg-primary text-white">
+    <h5 class="modal-title">
+        <i class="bi" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-plus-circle'"></i>
+        {{ isEditMode ? 'Editar Proveedor' : 'Nuevo Proveedor' }}
+    </h5>
+    <button type="button" class="btn-close btn-close-white" (click)="onCancel()"></button>
+</div>
+
+<div class="modal-body">
+    <!-- Alertas -->
+    <div class="alert alert-danger" *ngIf="error">
+        <i class="bi bi-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <!-- Loading -->
+    <div class="text-center my-4" *ngIf="loading && isEditMode">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="proveedorForm" (ngSubmit)="onSubmit()" *ngIf="!loading || !isEditMode">
+        <div class="mb-3">
+            <label for="nombre" class="form-label">
+                Nombre/Razón Social <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('nombre')}" id="nombre"
+                formControlName="nombre" placeholder="Ingrese el nombre o razón social">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('nombre')">
+                {{ getErrorMessage('nombre') }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="ruc" class="form-label">
+                    RUC <span class="text-danger">*</span>
+                </label>
+                <input type="text" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('ruc')}" id="ruc"
+                    formControlName="ruc" placeholder="Ej: 20123456789">
+                <div class="invalid-feedback" *ngIf="isFieldInvalid('ruc')">
+                    {{ getErrorMessage('ruc') }}
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="tipo" class="form-label">
+                    Tipo <span class="text-danger">*</span>
+                </label>
+                <select class="form-select" [ngClass]="{'is-invalid': isFieldInvalid('tipo')}" id="tipo"
+                    formControlName="tipo">
+                    <option value="">Seleccione</option>
+                    <option value="PRODUCTOS">Productos</option>
+                    <option value="SERVICIOS">Servicios</option>
+                </select>
+                <div class="invalid-feedback" *ngIf="isFieldInvalid('tipo')">
+                    {{ getErrorMessage('tipo') }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="telefono" class="form-label">
+                    Teléfono <span class="text-danger">*</span>
+                </label>
+                <input type="text" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('telefono')}"
+                    id="telefono" formControlName="telefono" placeholder="Ingrese el teléfono">
+                <div class="invalid-feedback" *ngIf="isFieldInvalid('telefono')">
+                    {{ getErrorMessage('telefono') }}
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="correo" class="form-label">
+                    Correo <span class="text-danger">*</span>
+                </label>
+                <input type="email" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('correo')}"
+                    id="correo" formControlName="correo" placeholder="ejemplo@correo.com">
+                <div class="invalid-feedback" *ngIf="isFieldInvalid('correo')">
+                    {{ getErrorMessage('correo') }}
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="direccion" class="form-label">
+                Dirección <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('direccion')}"
+                id="direccion" formControlName="direccion" placeholder="Ingrese la dirección">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('direccion')">
+                {{ getErrorMessage('direccion') }}
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="loading">
+        <i class="bi bi-x-circle"></i> Cancelar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        <i class="bi" [ngClass]="isEditMode ? 'bi-save' : 'bi-plus-circle'" *ngIf="!loading"></i>
+        {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+    </button>
+</div>

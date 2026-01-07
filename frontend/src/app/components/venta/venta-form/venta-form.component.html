@@ -1,0 +1,148 @@
+<div class="modal-header bg-success text-white">
+    <h5 class="modal-title"><i class="bi bi-cart-plus"></i> {{ isViewMode ? 'Detalle de Venta' : 'Nueva Venta' }}</h5>
+    <button type="button" class="btn-close btn-close-white" (click)="onCancel()"></button>
+</div>
+
+<div class="modal-body">
+    <div class="transaction-grid">
+        <!-- HEADER FORM -->
+        <div class="card mb-3 shadow-sm">
+            <div class="card-header bg-light">
+                <h6 class="mb-0">Datos Generales</h6>
+            </div>
+            <div class="card-body">
+                <form [formGroup]="headerForm">
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Cliente</label>
+                            <select class="form-select" formControlName="id_cliente">
+                                <option [ngValue]="null">Seleccione Cliente</option>
+                                <option *ngFor="let c of clientes" [value]="c.id_cliente">
+                                    {{ c.nombreC }} {{ c.apellido }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Tipo Pago</label>
+                            <select class="form-select" formControlName="tipo_pago">
+                                <option value="EFECTIVO">Efectivo</option>
+                                <option value="TARJETA">Tarjeta</option>
+                                <option value="YAPE">Yape/Plin</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ITEMS SELECTOR -->
+        <div class="card mb-3 shadow-sm bg-light" *ngIf="!isViewMode">
+            <div class="card-body">
+                <div class="row g-2 align-items-end">
+            
+                    <!-- Selector de Tipo -->
+                    <div class="col-12 mb-2">
+                        <div class="btn-group w-100" role="group">
+                            <input type="radio" class="btn-check" name="tipoItem" id="tipoProd" value="PRODUCTO"
+                                [(ngModel)]="tipoItem" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="tipoProd">
+                                <i class="bi bi-box-seam"></i> Producto
+                            </label>
+
+                            <input type="radio" class="btn-check" name="tipoItem" id="tipoServ" value="SERVICIO"
+                                [(ngModel)]="tipoItem" autocomplete="off">
+                            <label class="btn btn-outline-primary" for="tipoServ">
+                                <i class="bi bi-scissors"></i> Servicio
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-7">
+                        <label class="form-label">{{ tipoItem === 'PRODUCTO' ? 'Producto' : 'Servicio' }}</label>
+
+                        <!-- Select de Productos -->
+                        <select *ngIf="tipoItem === 'PRODUCTO'" class="form-select" [(ngModel)]="selectedProductoId">
+                            <option [ngValue]="null">Seleccione Producto</option>
+                            <option *ngFor="let p of productos" [value]="p.id_producto">
+                                {{ p.nombre }} - S/ {{ p.precio_venta }} (Stock: {{ p.stock }})
+                            </option>
+                        </select>
+
+                        <!-- Select de Servicios -->
+                        <select *ngIf="tipoItem === 'SERVICIO'" class="form-select" [(ngModel)]="selectedServicioId">
+                            <option [ngValue]="null">Seleccione Servicio</option>
+                            <option *ngFor="let s of servicios" [value]="s.id_servicio">
+                                {{ s.nombre }} - S/ {{ s.precio }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Cantidad</label>
+                        <input type="number" class="form-control" [(ngModel)]="cantidad" min="1">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary w-100" (click)="addItem()">
+                            <i class="bi bi-plus-lg"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DETAILS TABLE -->
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-striped mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Cant.</th>
+                                <th>Subtotal</th>
+                                <th *ngIf="!isViewMode"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let d of detalles; let i = index">
+                                <td>{{ d.nombreItem }}</td>
+                                <td>{{ d.precio | currency:'PEN ' }}</td>
+                                <td>{{ d.cantidad }}</td>
+                                <td>{{ d.subtotal | currency:'PEN ' }}</td>
+                                <td class="text-end" *ngIf="!isViewMode">
+                                    <button (click)="removeItem(i)" class="btn btn-sm btn-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr *ngIf="detalles.length === 0">
+                                <td colspan="5" class="text-center text-muted py-3">
+                                    Agregue productos a la venta
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="table-light">
+                            <tr>
+                                <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                                <td><strong>{{ total | currency:'PEN ' }}</strong></td>
+                                <td><strong>{{ total | currency:'PEN ' }}</strong></td>
+                                <td *ngIf="!isViewMode"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="loading">
+        {{ isViewMode ? 'Cerrar' : 'Cancelar' }}
+    </button>
+    <button type="button" class="btn btn-success" (click)="guardarVenta()" *ngIf="!isViewMode"
+        [disabled]="detalles.length === 0 || headerForm.invalid || loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        <i class="bi bi-check-circle" *ngIf="!loading"></i> Finalizar Venta
+    </button>
+</div>

@@ -1,0 +1,73 @@
+<div class="modal-header bg-dark text-white">
+    <h5 class="modal-title"><i class="bi bi-receipt"></i> Boleta de Compra</h5>
+    <button type="button" class="btn-close btn-close-white" (click)="onClose()"></button>
+</div>
+
+<div class="modal-body">
+    <div *ngIf="loading" class="text-center my-4">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+    </div>
+
+    <div *ngIf="compra && !loading" class="boleta-container p-3 border rounded bg-white">
+        <!-- Header Boleta -->
+        <div class="text-center mb-4">
+            <h3 class="fw-bold">PETSHOP S.A.C.</h3>
+            <p class="mb-1">COMPROBANTE DE COMPRA</p>
+            <p class="mb-1">RUC: 20123456789</p>
+        </div>
+
+        <hr class="border-2">
+
+        <!-- Info Compra -->
+        <div class="row mb-3">
+            <div class="col-6">
+                <strong>Proveedor:</strong> {{ compra.nombre_proveedor }}<br>
+                <strong>RUC Prov:</strong> {{ compra.id_proveedor }} <!-- Might need name check -->
+            </div>
+            <div class="col-6 text-end">
+                <strong>Compra N°:</strong> {{ compra.id_compra | number:'5.0-0' }}<br>
+                <strong>Fecha:</strong> {{ compra.fecha_compra | date:'dd/MM/yyyy HH:mm' }}
+            </div>
+        </div>
+
+        <!-- Tabla Detalles -->
+        <table class="table table-sm table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Cant.</th>
+                    <th>Descripción</th>
+                    <th class="text-end">Costo Unit.</th>
+                    <th class="text-end">Importe</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let d of compra.detalles">
+                    <td>{{ d.cantidad }}</td>
+                    <td>{{ d.nombre_producto }}</td>
+                    <td class="text-end">{{ d.precio_unitario | currency:'PEN ' }}</td>
+                    <td class="text-end">{{ (d.cantidad * d.precio_unitario) | currency:'PEN ' }}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end fw-bold">TOTAL:</td>
+                    <td class="text-end fw-bold fs-5">{{ compra.total | currency:'PEN ' }}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onClose()">Cerrar</button>
+    <button type="button" class="btn btn-danger me-2" (click)="exportarPDF()" [disabled]="!compra">
+        <i class="bi bi-file-earmark-pdf"></i> Exportar PDF
+    </button>
+   
+</div>

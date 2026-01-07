@@ -1,0 +1,86 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-scissors"></i> Gestión de Servicios</h2>
+        <button (click)="abrirModalNuevo()" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nuevo Servicio
+        </button>
+    </div>
+
+    <!-- Alertas -->
+    <div class="alert alert-danger" *ngIf="error">
+        <i class="bi bi-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <!-- Loading -->
+    <div class="text-center my-5" *ngIf="loading">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Tabla de servicios -->
+    <div class="card shadow-sm" *ngIf="!loading">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Descripción</th>
+                            <th>Precio</th>
+                            <th>Estado</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let servicio of servicios">
+                            <td>{{ servicio.id_servicio }}</td>
+                            <td>{{ servicio.nombre }}</td>
+                            <td>{{ servicio.tipo }}</td>
+                            <td>{{ servicio.descripcion }}</td>
+                            <td>S/. {{ servicio.precio | number:'1.2-2' }}</td>
+                            <td>
+                                <span class="badge"
+                                    [ngClass]="servicio.estado === 'Activo' || servicio.estado === 'ACTIVO' ? 'bg-success' : 'bg-danger'">
+                                    {{ servicio.estado }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <button (click)="abrirModalEditar(servicio.id_servicio!)"
+                                        class="btn btn-sm btn-warning" title="Editar">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                    <button (click)="eliminarServicio(servicio.id_servicio!)"
+                                        class="btn btn-sm btn-danger" title="Eliminar">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="servicios.length === 0">
+                            <td colspan="6" class="text-center text-muted">
+                                <i class="bi bi-inbox"></i> No hay servicios registrados
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            Total de servicios: <strong>{{ servicios.length }}</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Component -->
+<!-- Modal Component -->
+<div class="modal fade show d-block" tabindex="-1" *ngIf="showModal" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <app-servicio-form [idServicio]="selectedId" (close)="onModalClose($event)"></app-servicio-form>
+        </div>
+    </div>
+</div>

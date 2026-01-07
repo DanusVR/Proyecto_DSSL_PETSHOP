@@ -1,0 +1,84 @@
+<div class="modal-header bg-primary text-white">
+    <h5 class="modal-title">
+        <i class="bi" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-person-plus'"></i>
+        {{ isEditMode ? 'Editar Cliente' : 'Nuevo Cliente' }}
+    </h5>
+    <button type="button" class="btn-close btn-close-white" (click)="onCancel()"></button>
+</div>
+
+<div class="modal-body">
+    <!-- Alertas -->
+    <div class="alert alert-danger" *ngIf="error">
+        <i class="bi bi-exclamation-triangle"></i> {{ error }}
+    </div>
+
+    <!-- Loading -->
+    <div class="text-center my-4" *ngIf="loading && isEditMode">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()" *ngIf="!loading || !isEditMode">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="nombreC" class="form-label">Nombre <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('nombreC')}"
+                    id="nombreC" formControlName="nombreC" placeholder="Nombre">
+                <div class="invalid-feedback" *ngIf="isFieldInvalid('nombreC')">
+                    {{ getErrorMessage('nombreC') }}
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="apellido" class="form-label">Apellido <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('apellido')}"
+                    id="apellido" formControlName="apellido" placeholder="Apellido">
+                <div class="invalid-feedback" *ngIf="isFieldInvalid('apellido')">
+                    {{ getErrorMessage('apellido') }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="dni" class="form-label">DNI <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('dni')}" id="dni"
+                    formControlName="dni" placeholder="8 dígitos">
+                <div class="invalid-feedback" *ngIf="isFieldInvalid('dni')">
+                    {{ getErrorMessage('dni') }}
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="telefono" class="form-label">Teléfono <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('telefono')}"
+                    id="telefono" formControlName="telefono" placeholder="Número de contacto">
+                <div class="invalid-feedback" *ngIf="isFieldInvalid('telefono')">
+                    {{ getErrorMessage('telefono') }}
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="direccion" class="form-label">Dirección <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" [ngClass]="{'is-invalid': isFieldInvalid('direccion')}"
+                id="direccion" formControlName="direccion" placeholder="Dirección completa">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('direccion')">
+                {{ getErrorMessage('direccion') }}
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="loading">
+        <i class="bi bi-x-circle"></i> Cancelar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+        <i class="bi" [ngClass]="isEditMode ? 'bi-save' : 'bi-plus-circle'" *ngIf="!loading"></i>
+        {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+    </button>
+</div>
