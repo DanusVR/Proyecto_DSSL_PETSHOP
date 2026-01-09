@@ -1,14 +1,14 @@
 <div class="dashboard-container">
     <h1>Dashboard</h1>
 
-    <!-- Loading -->
+    
     <div class="text-center my-5" *ngIf="loading">
         <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Cargando...</span>
         </div>
     </div>
 
-    <!-- Error -->
+   
     <div class="alert alert-danger" *ngIf="error">
         {{ error }}
     </div>
@@ -26,7 +26,7 @@
             <h3>Productos Bajo Stock</h3>
             <p class="value">{{ stats.productosBajoStockCount }}</p>
         </div>
-        <!-- Using Total Clientes as fallback for Nuevos Clientes per limitation, but labelled as requested -->
+
         <div class="stat-card">
             <h3>Nuevos Clientes</h3>
             <p class="value">{{ stats.totalClientes }}</p>
@@ -34,7 +34,7 @@
         </div>
     </div>
 
-    <!-- Low Stock Table -->
+    <!-- Tabla de stock bajo -->
     <div class="card mt-4 shadow-sm" *ngIf="!loading && !error && stats.productosBajoStock.length > 0">
         <div class="card-header bg-danger text-white">
             <h5 class="mb-0"><i class="bi bi-exclamation-triangle-fill"></i> Alerta: Productos con Bajo Stock (< 5)</h5>

@@ -165,21 +165,76 @@ const crearCompra = async (req, res) => {
  * PUT /api/compras/:id/anular
  */
 const anularCompra = async (req, res) => {
+    let connection;
     try {
         const { id } = req.params;
-        await db.query('UPDATE compra SET estado = ? WHERE id_compra = ?', ['anulado', id]);
+
+        connection = await db.getConnection();
+        await connection.beginTransaction();
+
+        //  Verificar estado actual
+        const [compra] = await connection.query('SELECT estado FROM compra WHERE id_compra = ?', [id]);
+
+        if (compra.length === 0) {
+            await connection.rollback();
+            return res.status(404).json({
+                success: false,
+                mensaje: "Compra no encontrada"
+            });
+        }
+
+        if (compra[0].estado === 'anulado') {
+            await connection.rollback();
+            return res.status(400).json({
+                success: false,
+                mensaje: "La compra ya está anulada"
+            });
+        }
+
+        // Obtener detalles para revertir stock
+        const [detalles] = await connection.query('SELECT id_producto, cantidad FROM compra_detalle WHERE id_compra = ?', [id]);
+        console.log(`[AnularCompra] Compra: ${id}, Detalles encontrados: ${detalles.length}`);
+
+        //  Revertir stock 
+        for (const item of detalles) {
+            console.log(`[AnularCompra] Restando stock - Producto: ${item.id_producto}, Cantidad: ${item.cantidad}`);
+
+            // Verificar stock antes
+            const [stockAntes] = await connection.query('SELECT stock FROM producto WHERE id_producto = ?', [item.id_producto]);
+            console.log(`[AnularCompra] Stock antes: ${stockAntes[0]?.stock}`);
+
+            const [result] = await connection.query(
+                'UPDATE producto SET stock = stock - ? WHERE id_producto = ?',
+                [item.cantidad, item.id_producto]
+            );
+            console.log(`[AnularCompra] Resultado update:`, result.affectedRows);
+
+            // Verificar stock después
+            const [stockDespues] = await connection.query('SELECT stock FROM producto WHERE id_producto = ?', [item.id_producto]);
+            console.log(`[AnularCompra] Stock despues: ${stockDespues[0]?.stock}`);
+
+        }
+
+        // Actualizar estado de compra
+        await connection.query('UPDATE compra SET estado = ? WHERE id_compra = ?', ['anulado', id]);
+        console.log(`[AnularCompra] Estado actualizado a ANULADO`);
+
+        await connection.commit();
 
         res.json({
             success: true,
             mensaje: "Compra anulada exitosamente"
         });
     } catch (error) {
+        if (connection) await connection.rollback();
         console.error('Error al anular compra:', error);
         res.status(500).json({
             success: false,
             mensaje: "Error al anular la compra",
             error: error.message
         });
+    } finally {
+        if (connection) connection.release();
     }
 };
 

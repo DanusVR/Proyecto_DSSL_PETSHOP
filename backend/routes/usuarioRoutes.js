@@ -9,7 +9,7 @@ const {
 } = require('../controllers/usuarioController');
 const { verificarToken, verificarAdmin } = require('../middleware/auth.middleware');
 
-// Rutas protegidas (Admin only for Users management)
+// Rutas protegidas 
 router.get('/', verificarToken, verificarAdmin, obtenerUsuarios);
 router.get('/:id', verificarToken, verificarAdmin, obtenerUsuarioPorId);
 router.post('/', verificarToken, verificarAdmin, crearUsuario);

@@ -25,12 +25,12 @@ export class DashboardComponent implements OnInit {
   error: string = '';
 
   ngOnInit() {
-    this.loadStats();
+    this.cargarEstadísticas();
   }
 
-  loadStats() {
+  cargarEstadísticas() {
     this.loading = true;
-    this.dashboardService.getStats().subscribe({
+    this.dashboardService.obtenerEstadisticas().subscribe({
       next: (resp) => {
         if (resp.success) {
           this.stats = resp.data;

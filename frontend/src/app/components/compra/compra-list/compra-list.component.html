@@ -50,6 +50,10 @@
                                     (click)="verCompra(item.id_compra!)">
                                     <i class="bi bi-eye"></i>
                                 </button>
+                                <button class="btn btn-sm btn-danger ms-1" title="Anular Compra"
+                                    *ngIf="item.estado !== 'anulado'" (click)="anularCompra(item.id_compra!)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
                             </td>
                         </tr>
                         <tr *ngIf="compras.length === 0">

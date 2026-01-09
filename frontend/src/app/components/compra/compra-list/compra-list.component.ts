@@ -65,4 +65,21 @@ export class CompraListComponent implements OnInit {
         this.showBoletaModal = false;
         this.selectedId = null;
     }
+
+    anularCompra(id: number) {
+        if (confirm('¿Está seguro de que desea anular esta compra? El stock se descontará.')) {
+            this.loading = true;
+            this.service.anularCompra(id).subscribe({
+                next: (res) => {
+                    this.loading = false;
+                    this.loadData();
+                },
+                error: (err) => {
+                    console.error(err);
+                    this.error = 'Error al anular la compra';
+                    this.loading = false;
+                }
+            });
+        }
+    }
 }

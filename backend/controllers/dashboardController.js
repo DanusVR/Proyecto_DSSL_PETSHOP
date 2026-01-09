@@ -4,13 +4,12 @@ const db = require('../config/database');
  * Obtener estadísticas del dashboard
  * GET /api/dashboard/stats
  */
-const getDashboardStats = async (req, res) => {
+const obtenerDashboard = async (req, res) => {
     try {
         //  Ventas de hoy
         const [ventasHoy] = await db.query(
             "SELECT COALESCE(SUM(total), 0) as total FROM venta WHERE DATE(fecha) = CURDATE()"
         );
-
         //  Citas pendientes     
         const [citasPendientes] = await db.query(
             "SELECT COUNT(*) as total FROM cita WHERE estado = 'Pendiente' OR estado = 'PENDIENTE'"
@@ -45,5 +44,5 @@ const getDashboardStats = async (req, res) => {
 };
 
 module.exports = {
-    getDashboardStats
+    obtenerDashboard
 };

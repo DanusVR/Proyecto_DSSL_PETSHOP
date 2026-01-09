@@ -13,7 +13,7 @@ router.get('/', verificarToken, obtenerCompras);
 router.get('/:id', verificarToken, obtenerCompraPorId);
 router.post('/', verificarToken, crearCompra);
 
-// Anular compra solo Admin
+
 router.put('/:id/anular', verificarToken, verificarAdmin, anularCompra);
 
 module.exports = router;

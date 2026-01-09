@@ -10,7 +10,7 @@ export class DashboardService {
     private http = inject(HttpClient);
     private apiUrl = `${environment.apiUrl}/dashboard`;
 
-    getStats(): Observable<any> {
+    obtenerEstadisticas(): Observable<any> {
         return this.http.get(`${this.apiUrl}/stats`);
     }
 }
