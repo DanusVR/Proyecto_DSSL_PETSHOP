@@ -36,6 +36,33 @@ export class HistorialService {
         return this.http.delete<HistorialResponse>(`${this.apiUrl}/${id}`);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     // Alias en inglés para compatibilidad
     getAll(): Observable<HistorialResponse> {
         return this.obtenerHistorial();

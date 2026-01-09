@@ -15,7 +15,6 @@ const getDashboardStats = async (req, res) => {
         const [citasPendientes] = await db.query(
             "SELECT COUNT(*) as total FROM cita WHERE estado = 'Pendiente' OR estado = 'PENDIENTE'"
         );
-
         // Productos bajo stock (< 5)
         const [productosBajoStock] = await db.query(
             "SELECT id_producto, nombre, stock FROM producto WHERE stock < 5"

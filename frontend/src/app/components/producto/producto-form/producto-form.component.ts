@@ -39,7 +39,7 @@ export class ProductoFormComponent implements OnInit, OnChanges {
     }
 
     ngOnInit(): void {
-        this.loadCategorias();
+        this.cargarCategorias();
         this.checkMode();
     }
 
@@ -49,7 +49,7 @@ export class ProductoFormComponent implements OnInit, OnChanges {
         }
     }
 
-    loadCategorias(): void {
+    cargarCategorias(): void {
         this.categoriaService.getAll().subscribe({
             next: (response) => {
                 this.categorias = Array.isArray(response.data) ? response.data : [];
@@ -78,7 +78,7 @@ export class ProductoFormComponent implements OnInit, OnChanges {
         } else {
             this.isEditMode = false;
             this.productoForm.reset();
-            // Optional: Set default values for numbers to 0
+           
             this.productoForm.patchValue({ stock: 0, precio_costo: 0, precio_venta: 0 });
         }
     }

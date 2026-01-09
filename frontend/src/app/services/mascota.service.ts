@@ -32,6 +32,14 @@ export class MascotaService {
         return this.http.delete<MascotaResponse>(`${this.apiUrl}/${id}`);
     }
 
+
+
+
+
+
+
+
+    
     // Alias en inglés para compatibilidad
     getAll(): Observable<MascotaResponse> {
         return this.obtenerMascotas();

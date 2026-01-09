@@ -48,12 +48,7 @@
                             <td>{{ cita.fecha | date:'dd/MM/yyyy' }}</td>
                             <td>{{ cita.hora }}</td>
                             <td>
-                                <span class="badge" [ngClass]="{
-                    'bg-warning': cita.estado === 'PENDIENTE' || cita.estado === 'Pendiente',
-                    'bg-info': cita.estado === 'CONFIRMADA' || cita.estado === 'Confirmada',
-                    'bg-success': cita.estado === 'COMPLETADA' || cita.estado === 'Completada',
-                    'bg-danger': cita.estado === 'CANCELADA' || cita.estado === 'Cancelada'
-                  }">
+                                <span class="badge" [ngClass]="getEstadoBadgeClass(cita.estado)">
                                     {{ cita.estado }}
                                 </span>
                             </td>

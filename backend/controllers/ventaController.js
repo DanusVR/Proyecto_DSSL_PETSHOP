@@ -138,7 +138,7 @@ const crearVenta = async (req, res) => {
 
         const id_venta = resultadoVenta.insertId;
 
-        // Insertar Detalles y Actualizar Stock (si es producto)
+        // Insertar Detalles y Actualizar Stock 
         for (const item of detalles) {
             await connection.query(
                 'INSERT INTO detalle_venta (id_venta, id_producto, id_servicio, cantidad, precio, subtotal) VALUES (?, ?, ?, ?, ?, ?)',

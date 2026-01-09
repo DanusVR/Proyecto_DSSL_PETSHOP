@@ -32,7 +32,15 @@ export class ClienteService {
         return this.http.delete<ClienteResponse>(`${this.apiUrl}/${id}`);
     }
 
-    // Alias en inglés para compatibilidad
+
+
+
+
+
+
+
+
+    
     getAll(): Observable<ClienteResponse> {
         return this.obtenerClientes();
     }

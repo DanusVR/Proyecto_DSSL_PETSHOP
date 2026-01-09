@@ -32,6 +32,13 @@ export class ProveedorService {
         return this.http.delete<ProveedorResponse>(`${this.apiUrl}/${id}`);
     }
 
+
+
+
+
+
+    
+
     // Alias en inglés para compatibilidad
     getAll(): Observable<ProveedorResponse> {
         return this.obtenerProveedores();

@@ -26,6 +26,14 @@ export class ReporteService {
         return this.http.get<ReporteVentasResponse>(url);
     }
 
+
+
+
+
+
+
+    
+
     // Alias para compatibilidad
     getVentas(filters?: any): Observable<ReporteVentasResponse> {
         return this.obtenerReporteVentas(filters?.fechaInicio, filters?.fechaFin);

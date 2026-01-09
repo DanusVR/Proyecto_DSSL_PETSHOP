@@ -24,11 +24,11 @@ export class VentaBoletaComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['idVenta'] && this.idVenta) {
-            this.loadVenta(this.idVenta);
+            this.cargarVenta(this.idVenta);
         }
     }
 
-    loadVenta(id: number) {
+    cargarVenta(id: number) {
         this.loading = true;
         this.error = '';
         this.ventaService.getById(id).subscribe({

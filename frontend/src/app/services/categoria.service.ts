@@ -32,6 +32,13 @@ export class CategoriaService {
         return this.http.delete<CategoriaResponse>(`${this.apiUrl}/${id}`);
     }
 
+
+
+
+
+
+    
+
     // Alias en inglés para compatibilidad
     getAll(): Observable<CategoriaResponse> {
         return this.obtenerCategorias();

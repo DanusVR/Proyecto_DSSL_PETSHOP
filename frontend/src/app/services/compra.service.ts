@@ -28,7 +28,16 @@ export class CompraService {
         return this.http.put<CompraResponse>(`${this.apiUrl}/${id}/anular`, {});
     }
 
-    // Alias en inglés para compatibilidad
+
+
+
+
+
+
+
+
+
+    
     getAll(): Observable<CompraResponse> {
         return this.obtenerCompras();
     }

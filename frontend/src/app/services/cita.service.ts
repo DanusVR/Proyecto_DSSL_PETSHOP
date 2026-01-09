@@ -32,6 +32,16 @@ export class CitaService {
         return this.http.delete<CitaResponse>(`${this.apiUrl}/${id}`);
     }
 
+
+
+
+
+
+
+
+
+    
+
     // Alias en inglés para compatibilidad
     getAll(): Observable<CitaResponse> {
         return this.obtenerCitas();

@@ -32,6 +32,14 @@ export class UsuarioService {
         return this.http.delete<AuthResponse>(`${this.apiUrl}/${id}`);
     }
 
+
+
+
+
+
+
+    
+
     // Alias en inglés para compatibilidad
     getAll(): Observable<AuthResponse> {
         return this.obtenerUsuarios();

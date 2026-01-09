@@ -78,4 +78,19 @@ export class CitaListComponent implements OnInit {
             });
         }
     }
+
+    getEstadoBadgeClass(estado: string | undefined): string {
+        if (!estado) return 'bg-secondary';
+        const status = estado.toLowerCase();
+        switch (status) {
+            case 'pendiente':
+                return 'bg-warning text-dark';
+            case 'atendido':
+                return 'bg-success';
+            case 'cancelado':
+                return 'bg-danger';
+            default:
+                return 'bg-secondary';
+        }
+    }
 }

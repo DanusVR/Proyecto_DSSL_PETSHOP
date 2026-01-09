@@ -32,6 +32,12 @@ export class ServicioService {
         return this.http.delete<ServicioResponse>(`${this.apiUrl}/${id}`);
     }
 
+
+
+
+
+
+    
     // Alias en inglés para compatibilidad
     getAll(): Observable<ServicioResponse> {
         return this.obtenerServicios();

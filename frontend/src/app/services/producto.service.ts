@@ -32,6 +32,13 @@ export class ProductoService {
         return this.http.delete<ProductoResponse>(`${this.apiUrl}/${id}`);
     }
 
+
+
+
+
+
+
+    
     // Alias en inglés para compatibilidad
     getAll(): Observable<ProductoResponse> {
         return this.obtenerProductos();
