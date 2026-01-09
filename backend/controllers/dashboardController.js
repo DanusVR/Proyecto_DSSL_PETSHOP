@@ -6,22 +6,22 @@ const db = require('../config/database');
  */
 const getDashboardStats = async (req, res) => {
     try {
-        // 1. Ventas de hoy
+        //  Ventas de hoy
         const [ventasHoy] = await db.query(
             "SELECT COALESCE(SUM(total), 0) as total FROM venta WHERE DATE(fecha) = CURDATE()"
         );
 
-        // 2. Citas pendientes     
+        //  Citas pendientes     
         const [citasPendientes] = await db.query(
             "SELECT COUNT(*) as total FROM cita WHERE estado = 'Pendiente' OR estado = 'PENDIENTE'"
         );
 
-        // 3. Productos bajo stock (< 5)
+        // Productos bajo stock (< 5)
         const [productosBajoStock] = await db.query(
             "SELECT id_producto, nombre, stock FROM producto WHERE stock < 5"
         );
 
-        // 4. Nuevos Clientes       
+        //  Nuevos Clientes       
         const [totalClientes] = await db.query("SELECT COUNT(*) as total FROM cliente");
 
         res.json({

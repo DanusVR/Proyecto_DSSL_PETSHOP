@@ -35,7 +35,7 @@ export class VentaBoletaComponent implements OnChanges {
             next: (resp) => {
                 if (resp.success && resp.data && !Array.isArray(resp.data)) {
                     this.venta = resp.data as Venta;
-                    // Normalizar nombres de items si es necesario
+                    
                     if (this.venta.detalles) {
                         this.venta.detalles = this.venta.detalles.map(d => ({
                             ...d,
@@ -67,10 +67,10 @@ export class VentaBoletaComponent implements OnChanges {
         const data = document.querySelector('.boleta-container') as HTMLElement;
         if (!data) return;
 
-        this.loading = true; // Use loading state just to show activity if needed, or separate spinner
+        this.loading = true; 
         html2canvas(data, { scale: 2 }).then(canvas => {
-            const imgWidth = 210; // A4 width in mm
-            const pageHeight = 295; // A4 height in mm
+            const imgWidth = 210; 
+            const pageHeight = 295; 
             const imgHeight = canvas.height * imgWidth / canvas.width;
             const heightLeft = imgHeight;
 

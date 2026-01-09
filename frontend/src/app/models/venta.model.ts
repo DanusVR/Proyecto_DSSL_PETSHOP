@@ -17,17 +17,17 @@ export interface Venta {
     id_venta?: number;
     id_cliente: number;
     idusuario: number;
-    id_usuario?: number; // Alias para idusuario
-    fecha?: string;
+    id_usuario?: number;
+    fecha?: string | Date;
     total: number;
     tipo_pago: string;
     monto_pagado: number;
     // Campos adicionales del JOIN
     nombre_cliente?: string;
     apellido_cliente?: string;
-    clienteNombre?: string; // Alias combinado
+    clienteNombre?: string;
     nombre_usuario?: string;
-    usuarioNombre?: string; // Alias para nombre_usuario
+    usuarioNombre?: string;
     detalles: VentaDetalle[];
 }
 

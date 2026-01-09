@@ -24,7 +24,16 @@ export class VentaService {
         return this.http.post<VentaResponse>(this.apiUrl, venta);
     }
 
-    // Alias en inglés para compatibilidad
+
+
+
+
+
+
+    
+
+
+
     getAll(): Observable<VentaResponse> {
         return this.obtenerVentas();
     }

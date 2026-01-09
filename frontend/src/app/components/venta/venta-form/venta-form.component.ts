@@ -40,8 +40,7 @@ export class VentaFormComponent implements OnInit, OnChanges {
     detalles: VentaDetalle[] = [];
     loading: boolean = false;
     tipoItem: 'PRODUCTO' | 'SERVICIO' = 'PRODUCTO';
-
-    // Binding properties
+    
     selectedProductoId: number | null = null;
     selectedServicioId: number | null = null;
     cantidad: number = 1;
@@ -123,13 +122,12 @@ export class VentaFormComponent implements OnInit, OnChanges {
         });
     }
 
-    checkLoading() {
-        // Simple check just to stop loading spinner if both are done (could be improved with forklion)
+    checkLoading() {      
         this.loading = false;
     }
 
     onProductSelect(id: string) {
-        // Optional logic
+      
     }
 
     addItem() {
@@ -147,7 +145,7 @@ export class VentaFormComponent implements OnInit, OnChanges {
                 return;
             }
 
-            // Check if item already exists
+           
             const existingItem = this.detalles.find(d => d.id_producto === itemId);
             if (existingItem) {
                 existingItem.cantidad += qty;
@@ -168,8 +166,6 @@ export class VentaFormComponent implements OnInit, OnChanges {
             const servicio = this.servicios.find(s => s.id_servicio == itemId);
             if (!servicio) return;
 
-            // Servicios no tienen stock, se agregan directamente
-            // Check if item already exists
             const existingItem = this.detalles.find(d => d.id_servicio === itemId);
             if (existingItem) {
                 existingItem.cantidad += qty;
@@ -186,8 +182,7 @@ export class VentaFormComponent implements OnInit, OnChanges {
                 });
             }
         }
-
-        // Reset fields
+      
         this.selectedProductoId = null;
         this.selectedServicioId = null;
         this.cantidad = 1;

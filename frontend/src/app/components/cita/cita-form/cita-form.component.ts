@@ -34,7 +34,7 @@ export class CitaFormComponent implements OnInit, OnChanges {
     constructor() {
         this.citaForm = this.fb.group({
             id_mascota: [null, [Validators.required]],
-            servicios: [[], [Validators.required]], // Array of IDs
+            servicios: [[], [Validators.required]], 
             fecha: ['', [Validators.required]],
             hora: ['', [Validators.required]],
             estado: ['PENDIENTE']
@@ -83,18 +83,16 @@ export class CitaFormComponent implements OnInit, OnChanges {
                 next: (response) => {
                     const data: any = response.data;
                     if (data) {
-                        // Patch basic fields
-                        // Patch basic fields
+                       
                         this.citaForm.patchValue({
                             id_mascota: data.id_mascota,
                             fecha: data.fecha ? new Date(data.fecha).toISOString().split('T')[0] : '',
                             hora: data.hora,
-                            // Ensure we load the raw value or normalize it if needed. 
-                            // Using the raw value from DB is safest if we match options in HTML.
+                            
                             estado: data.estado
                         });
 
-                        // Handle services
+                       
                         if (data.servicios && Array.isArray(data.servicios)) {
                             this.selectedServices = data.servicios.map((s: any) => ({
                                 id_servicio: s.id_servicio,
@@ -126,7 +124,7 @@ export class CitaFormComponent implements OnInit, OnChanges {
 
         const service = this.servicios.find(s => s.id_servicio == id);
         if (service) {
-            // Prevent duplicates
+           
             if (!this.selectedServices.some(s => s.id_servicio === id)) {
                 this.selectedServices.push({
                     id_servicio: service.id_servicio,
@@ -158,8 +156,7 @@ export class CitaFormComponent implements OnInit, OnChanges {
             this.citaForm.markAllAsTouched();
             return;
         }
-
-        // Validate at least one service
+       
         if (this.selectedServices.length === 0) {
             this.error = 'Debe seleccionar al menos un servicio';
             return;

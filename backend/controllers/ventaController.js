@@ -130,7 +130,7 @@ const crearVenta = async (req, res) => {
         connection = await db.getConnection();
         await connection.beginTransaction();
 
-        // 1. Insertar Venta
+        //  Insertar Venta
         const [resultadoVenta] = await connection.query(
             'INSERT INTO venta (id_cliente, idusuario, total, tipo_pago, monto_pagado) VALUES (?, ?, ?, ?, ?)',
             [id_cliente, id_usuario, total, tipo_pago, monto_pagado]
@@ -138,7 +138,7 @@ const crearVenta = async (req, res) => {
 
         const id_venta = resultadoVenta.insertId;
 
-        // 2. Insertar Detalles y Actualizar Stock (si es producto)
+        // Insertar Detalles y Actualizar Stock (si es producto)
         for (const item of detalles) {
             await connection.query(
                 'INSERT INTO detalle_venta (id_venta, id_producto, id_servicio, cantidad, precio, subtotal) VALUES (?, ?, ?, ?, ?, ?)',

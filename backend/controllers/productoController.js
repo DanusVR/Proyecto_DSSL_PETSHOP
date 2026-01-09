@@ -105,7 +105,7 @@ const crearProducto = async (req, res) => {
 
         res.status(201).json({
             success: true,
-            mensaje: "Producto creado exitosamente",
+            mensaje: "Producto creado exitosamente", 
             data: {
                 id_producto: resultado.insertId,
                 nombre, id_categoria, descripcion, stock, precio_costo, precio_venta, estado
